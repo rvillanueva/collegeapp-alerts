@@ -1,0 +1,136 @@
+/**
+ * Using Rails-like standard naming convention for endpoints.
+ * GET     /api/applicants              ->  index
+ * POST    /api/applicants              ->  create
+ * GET     /api/applicants/:id          ->  show
+ * PUT     /api/applicants/:id          ->  update
+ * DELETE  /api/applicants/:id          ->  destroy
+ */
+
+'use strict';
+
+import _ from 'lodash';
+var Applicant = require('./applicant.model');
+var twilio = require('twilio')(process.env.TWILIO_ID, process.env.TWILIO_KEY);
+
+function handleError(res, statusCode) {
+  statusCode = statusCode || 500;
+  return function(err) {
+    res.status(statusCode).send(err);
+  };
+}
+
+function responseWithResult(res, statusCode) {
+  statusCode = statusCode || 200;
+  return function(entity) {
+    if (entity) {
+      res.status(statusCode).json(entity);
+    }
+  };
+}
+
+function handleEntityNotFound(res) {
+  return function(entity) {
+    if (!entity) {
+      res.status(404).end();
+      return null;
+    }
+    return entity;
+  };
+}
+
+function sendConfirmation(res) {
+  return function(entity) {
+
+    if (!entity.schools) {
+      res.status(400).send('No schools associated with alerts.')
+      return null
+    }
+
+    twilio.sendMessage({
+      to: entity.phone,
+      from: process.env.TWILIO_PHONE,
+      body: 'You are now signed up to receive admission deadline alerts for ' + entity.schools.length + ' schools. If you did not register, text STOP to stop all alerts.'
+    }, function(err, responseData) {
+      if (!err) {
+        console.log('Notification sent to ' + entity.phone);
+        return entity;
+      } else {
+        res.status(err.status).send(err.message);
+        return null;
+      }
+    });
+
+
+  };
+}
+
+function saveUpdates(updates) {
+  return function(entity) {
+    var updated = _.merge(entity, updates);
+    return updated.saveAsync()
+      .spread(updated => {
+        return updated;
+      });
+  };
+}
+
+function removeEntity(res) {
+  return function(entity) {
+    if (entity) {
+      return entity.removeAsync()
+        .then(() => {
+          res.status(204).end();
+        });
+    }
+  };
+}
+
+// Gets a list of Applicants
+export function index(req, res) {
+  Applicant.findAsync()
+    .then(responseWithResult(res))
+    .catch(handleError(res));
+}
+
+// Gets a single Applicant from the DB
+export function show(req, res) {
+  Applicant.findByIdAsync(req.params.id)
+    .then(handleEntityNotFound(res))
+    .then(responseWithResult(res))
+    .catch(handleError(res));
+}
+
+// Creates a new Applicant in the DB
+export function create(req, res) {
+  // create applicant with phone number, verified false
+  Applicant.createAsync(req.body)
+    .then(sendConfirmation(res))
+    .then(responseWithResult(res, 201))
+    .catch(handleError(res));
+}
+
+// Updates an existing Applicant in the DB
+export function update(req, res) {
+  if (req.body._id) {
+    delete req.body._id;
+  }
+  Applicant.findByIdAsync(req.params.id)
+    .then(handleEntityNotFound(res))
+    .then(saveUpdates(req.body))
+    .then(responseWithResult(res))
+    .catch(handleError(res));
+}
+
+// Verifies applicant's phone number
+export function sms(req, res) {
+  // Handle SMSM logic
+}
+
+// Deletes a Applicant from the DB
+export function destroy(req, res) {
+  Applicant.findByIdAsync(req.params.id)
+    .then(handleEntityNotFound(res))
+    .then(removeEntity(res))
+    .catch(handleError(res));
+}

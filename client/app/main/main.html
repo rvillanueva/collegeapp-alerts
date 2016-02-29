@@ -1,0 +1,20 @@
+<navbar></navbar>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 centered">
+
+      What application deadlines would you like to be reminded about?<br>
+      <input type="text" ng-model="main.addedSchool"></input>
+      <br><br>
+      <p ng-repeat="school in main.applicant.schools">{{school.name}}</p>
+      <br>
+      Your phone number:<br>
+      <input type="tel" ng-model="main.applicant.phone"></input>
+      <br><br>
+      <button class="btn btn-lg btn-primary" ng-click="main.submit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<footer></footer>
