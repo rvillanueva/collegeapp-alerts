@@ -813,8 +813,8 @@ module.exports = function(grunt) {
     var parse = require('csv-parse');
     var csvData = grunt.file.read('reminders.csv');
     var done = this.async();
-    var json;
-    var returned = [];
+    var schoolArray = [];
+    var satIndex = {};
     parse(csvData, {}, function(err, output) {
       var reminders = output;
       var expectedHeader = ['satId', 'schoolName', 'deadlineName', 'date']
@@ -825,19 +825,39 @@ module.exports = function(grunt) {
         reminders[0][3] == expectedHeader[3]
       ) {
         reminders.splice(0, 1);
-        console.log(reminders);
         for (var i = 0; i < reminders.length; i++) {
           var reminder = reminders[i];
-          var date = reminder[3]; // Need to convert
-          var pushed = {
-            satId: reminder[0],
-            schoolName: reminder[1],
-            deadlineName: reminder[2],
+          var satId = reminder[0];
+          var schoolName = reminder[1];
+          var deadlineName = reminder[2];
+          var date = reminder[3];
+
+          if(!satIndex[satId]){
+            var school = {
+              satId: satId,
+              schoolName: schoolName,
+              deadlines: []
+            }
+            satIndex[satId] = school;
+          }
+
+          var deadline = {
+            deadlineName: deadlineName,
             date: date
           }
-          returned.push(reminder);
+          satIndex[satId].deadlines.push(deadline);
         }
-        var returnedString = JSON.stringify(returned);
+
+        console.log(satIndex)
+        // Build sat school array
+        for (var property in satIndex) {
+            if (satIndex.hasOwnProperty(property)) {
+                schoolArray.push(satIndex[property]);
+            }
+        }
+        console.log(schoolArray)
+        var returnedString = JSON.stringify(schoolArray);
+        console.log(returnedString)
         grunt.file.write('client/assets/data/reminders.json', returnedString);
         grunt.file.write('server/components/data/reminders.json', returnedString);
         done();

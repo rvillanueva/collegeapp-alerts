@@ -5,9 +5,10 @@
     <div class="col-lg-12 centered">
 
       What application deadlines would you like to be reminded about?<br>
-      <input type="text" ng-model="main.addedSchool"></input>
+      <input type="text" ng-model="main.addedSchool" typeahead="school.schoolName for school in main.schools | filter:{schoolName:$viewValue} | limitTo:8" typeahead-on-select="main.addSchool($item, $model, $label)"></input>
+
       <br><br>
-      <p ng-repeat="school in main.applicant.schools">{{school.name}}</p>
+      <p ng-repeat="school in main.applicant.schools">{{school.schoolName}}</p>
       <br>
       Your phone number:<br>
       <input type="tel" ng-model="main.applicant.phone"></input>

@@ -6,27 +6,59 @@ class MainController {
 
   constructor($http, $scope, socket) {
     this.$http = $http;
-    this.awesomeThings = [];
+    this.applicant = {
+      schools: []
+    };
 
-    $http.get('/api/things').then(response => {
+    /*$http.get('/api/things').then(response => {
       this.awesomeThings = response.data;
       socket.syncUpdates('thing', this.awesomeThings);
+    });*/
+
+    $http.get('assets/data/reminders.json').then(response => {
+      this.schools = response.data;
+      console.log(this.schools);
     });
 
-    $scope.$on('$destroy', function() {
+    /*$scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
-    });
+    });*/
   }
 
-  addThing() {
-    if (this.newThing) {
-      this.$http.post('/api/things', { name: this.newThing });
-      this.newThing = '';
+  addSchool(school) {
+    if (school) {
+      this.applicant.schools.push(school)
+      console.log(school)
+      this.addedSchool = null;
     }
   }
 
   deleteThing(thing) {
     this.$http.delete('/api/things/' + thing._id);
+  }
+
+  logging(thing) {
+    console.log(thing);
+    console.log(this.addedSchool)
+  }
+
+  addSchool($item, $model, $label) {
+    var matched = false;
+    for(var i = 0; i < this.applicant.schools.length; i++){
+      if(this.applicant.schools[i].satId == $item.satId){
+        matched = true;
+      }
+    }
+    if(!matched){
+      var added = {
+        satId: $item.satId,
+        schoolName: $item.schoolName
+      }
+      this.applicant.schools.push(added);
+    } else {
+      window.alert('School has already been added.')
+    }
+    this.addedSchool = '';
   }
 
   submit() {

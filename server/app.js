@@ -41,7 +41,7 @@ function startServer() {
 setImmediate(startServer);
 
 // Start cron
-require('./reminders');
+require('./cron');
 
 // Expose app
 exports = module.exports = app;
