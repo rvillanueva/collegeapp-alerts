@@ -12,9 +12,11 @@
 import _ from 'lodash';
 var Applicant = require('./applicant.model');
 var twilio = require('twilio')(process.env.TWILIO_ID, process.env.TWILIO_KEY);
+var Alert = require('../../alert')
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
+  console.log('Error ' + statusCode);
   return function(err) {
     res.status(statusCode).send(err);
   };
@@ -22,8 +24,10 @@ function handleError(res, statusCode) {
 
 function responseWithResult(res, statusCode) {
   statusCode = statusCode || 200;
+  console.log('Response ' + statusCode);
   return function(entity) {
     if (entity) {
+      console.log(statusCode)
       res.status(statusCode).json(entity);
     }
   };
@@ -39,29 +43,10 @@ function handleEntityNotFound(res) {
   };
 }
 
-function sendConfirmation(res) {
+function testHandler(res) {
   return function(entity) {
-
-    if (!entity.schools) {
-      res.status(400).send('No schools associated with alerts.')
-      return null
-    }
-
-    twilio.sendMessage({
-      to: entity.phone,
-      from: process.env.TWILIO_PHONE,
-      body: 'You are now signed up to receive admission deadline alerts for ' + entity.schools.length + ' schools. If you did not register, text STOP to stop all alerts.'
-    }, function(err, responseData) {
-      if (!err) {
-        console.log('Notification sent to ' + entity.phone);
-        return entity;
-      } else {
-        res.status(err.status).send(err.message);
-        return null;
-      }
-    });
-
-
+      res.status(404).end();
+      return null;
   };
 }
 
@@ -105,7 +90,8 @@ export function show(req, res) {
 export function create(req, res) {
   // create applicant with phone number, verified false
   Applicant.createAsync(req.body)
-    .then(sendConfirmation(res))
+    //.then(Alert.test(res))
+    .then(Alert.registered(res))
     .then(responseWithResult(res, 201))
     .catch(handleError(res));
 }
@@ -120,11 +106,6 @@ export function update(req, res) {
     .then(saveUpdates(req.body))
     .then(responseWithResult(res))
     .catch(handleError(res));
-}
-
-// Verifies applicant's phone number
-export function sms(req, res) {
-  // Handle SMSM logic
 }
 
 // Deletes a Applicant from the DB

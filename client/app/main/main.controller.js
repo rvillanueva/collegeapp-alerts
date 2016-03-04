@@ -4,25 +4,19 @@
 
 class MainController {
 
-  constructor($http, $scope, socket) {
+  constructor($http, $scope, $window, $location, socket) {
     this.$http = $http;
+    this.$window = $window;
+    this.$location = $location;
     this.applicant = {
       schools: []
     };
-
-    /*$http.get('/api/things').then(response => {
-      this.awesomeThings = response.data;
-      socket.syncUpdates('thing', this.awesomeThings);
-    });*/
 
     $http.get('assets/data/reminders.json').then(response => {
       this.schools = response.data;
       console.log(this.schools);
     });
 
-    /*$scope.$on('$destroy', function() {
-      socket.unsyncUpdates('thing');
-    });*/
   }
 
   addSchool(school) {
@@ -31,15 +25,6 @@ class MainController {
       console.log(school)
       this.addedSchool = null;
     }
-  }
-
-  deleteThing(thing) {
-    this.$http.delete('/api/things/' + thing._id);
-  }
-
-  logging(thing) {
-    console.log(thing);
-    console.log(this.addedSchool)
   }
 
   addSchool($item, $model, $label) {
@@ -62,7 +47,14 @@ class MainController {
   }
 
   submit() {
-    this.$http.post('/api/applicants/', this.applicant);
+    if(this.applicant.schools.length == 0){
+      window.alert('Please add a school to your reminders.')
+      return null;
+    }
+    this.$http.post('/api/applicants/', this.applicant)
+      .then(response => {
+        this.$location.url('/success');
+      });
     console.log(this.applicant);
   }
 }

@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-lg-12 centered">
 
-      What application deadlines would you like to be reminded about?<br>
+      What application deadlines would you like to be reminded about?<br><br>
       <input type="text" ng-model="main.addedSchool" typeahead="school.schoolName for school in main.schools | filter:{schoolName:$viewValue} | limitTo:8" typeahead-on-select="main.addSchool($item, $model, $label)"></input>
 
       <br><br>

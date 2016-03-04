@@ -5,10 +5,9 @@ var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 var ApplicantSchema = new mongoose.Schema({
   phone: String,
   created: Date,
-  alerts: [
+  schools: [
     {
-      idType: String,
-      id: String
+      satId: String
     }
   ]
 });

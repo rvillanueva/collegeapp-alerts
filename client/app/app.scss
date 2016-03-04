@@ -23,9 +23,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 // injector
 @import 'admin/admin.scss';
 @import 'main/main.scss';
-@import 'routes/alerts/signup/signup.scss';
-@import 'routes/alerts/success/success.scss';
-@import 'routes/landing/landing.scss';
+@import 'success/success.scss';
 @import '../components/footer/footer.scss';
 @import '../components/modal/modal.scss';
 @import '../components/oauth-buttons/oauth-buttons.scss';
