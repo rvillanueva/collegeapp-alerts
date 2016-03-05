@@ -563,7 +563,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.server %>',
-          src: ['**/*.{js,json}'],
+          src: ['**/*.{js,json}','!**/reminders.json'],
           dest: '<%= yeoman.dist %>/<%= yeoman.server %>'
         }]
       }
@@ -786,6 +786,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', [
+    'reminders',
     'clean:dist',
     'concurrent:pre',
     'concurrent:dist',
