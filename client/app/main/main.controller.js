@@ -4,7 +4,7 @@
 
 class MainController {
 
-  constructor($http, $scope, $window, $location, socket) {
+  constructor($http, $scope, $window, $location) {
     this.$http = $http;
     this.$window = $window;
     this.$location = $location;

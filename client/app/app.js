@@ -8,7 +8,6 @@ angular.module('collegeApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'btford.socket-io',
   'ui.bootstrap',
   'validation.match'
 ])

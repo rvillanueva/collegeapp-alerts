@@ -20,11 +20,9 @@ module.exports = function(config) {
       'client/bower_components/angular-route/angular-route.js',
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
-      'client/bower_components/angular-socket-io/socket.js',
       'client/bower_components/angular-validation-match/dist/angular-validation-match.min.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
-      'node_modules/socket.io-client/socket.io.js',
       'client/app/app.js',
       'client/{app,components}/**/*.module.js',
       'client/{app,components}/**/*.js',

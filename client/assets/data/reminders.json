@@ -1,11 +1,1 @@
-[{
-  "satId": "3917",
-  "schoolName": "UMass Amherst",
-  "deadlines": [{
-    "deadlineName": "Early Admissions Deadline",
-    "date": "1/20/16"
-  }, {
-    "deadlineName": "Regular Admissions Deadline",
-    "date": "2/20/16"
-  }]
-}]
+[{"satId":"3917","schoolName":"UMass Amherst","deadlines":[{"deadlineName":"Early Admissions Deadline","date":"1/20/16"},{"deadlineName":"Regular Admissions Deadline","date":"2/20/16"}]}]

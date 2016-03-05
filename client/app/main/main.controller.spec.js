@@ -4,7 +4,6 @@ describe('Controller: MainController', function() {
 
   // load the controller's module
   beforeEach(module('collegeApp'));
-  beforeEach(module('socketMock'));
 
   var scope;
   var MainController;

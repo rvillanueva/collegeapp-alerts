@@ -3,67 +3,111 @@
 var Applicant = require('../api/applicant/applicant.model');
 var Promise = require('bluebird');
 var twilio = require('twilio')(process.env.TWILIO_ID, process.env.TWILIO_KEY);
+var schools = require('../components/data/reminders.json');
 
-function sendReminders(req) {
-  console.log(req);
-  var reminders = req;
+function sendAlerts() {
+  var today = new Date();
+  var reminders = [];
+  for (var i = 0; i < schools.length; i++) {
+    var school = schools[i];
+    /// Cycle through deadlines of that school to see if any are for today
+    for (var j = 0; j < school.deadlines.length; j++) {
+      var deadline = school.deadlines[j];
+      // Identify what reminders are due today
+      if ((deadline.date >= today && deadline.date < today) || process.env.NODE_ENV == 'development') { // Logic to check if between today and tomorrow or if early reminder
+        var reminder = {
+          satId: school.satId,
+          deadlineName: deadline.deadlineName,
+          date: deadline.date,
+          schoolName: school.schoolName
+        };
+        reminders.push(reminder);
+        console.log(reminder);
+      }
+    }
+    // Push the reminders to another service that finds users tracking those schools
+    sendReminders(reminders);
+  }
+
+}
+
+function sendReminders(reminders) {
   // - Get all users
   // - Filter for users with schools that have alerts
   // - For each user, compile aggregated reminder
   // - Send each user a reminder
-  Applicant.findAsync()
-    .then(function(res) {
-      console.log('Applicants:')
-      console.log(res)
-      var applicants = res;
-      for (var i = 0; i < applicants.length; i++) {
-        var applicant = applicants[i];
-        console.log(applicant);
-        var theirReminders = [];
-        for (var j = 0; j < applicant.schools.length; j++) {
-          var school = applicants.schools[j];
-          for (var k = 0; k < reminders.length; k++) {
-            var reminder = reminders[k];
-            if (reminder.satId == school.satId) {
-              theirReminders.push(reminder);
-            }
-          }
-        }
-        // Concatenate reminders and turn into single message;
-        createMessage(theirReminders, applicant);
+
+  function checkSchool(school, callback){
+    var returned = [];
+    for (var k = 0; k < reminders.length; k++) {
+      var reminder = reminders[k];
+      if (reminder.satId == school.satId) {
+        returned.push(reminder);
       }
-    })
-
-
-  function createMessage(reminders, applicant) {
-    var message;
-    message += 'Hello! We wanted to remind you about the following deadlines: \n'
-    for (var j = 0; j < theirReminders.length; j++) {
-      var reminder = theirReminders[j];
-      message += reminder.schoolName;
-      message += '\'s ';
-      message += reminder.deadlineName;
-      message += ', due ';
-      message += 'today';
     }
-
-    console.log('MESSAGE: ' + message)
-
-    var notify = Promise.promisifyAll(twilio.sendMessage);
-
-    notify({
-      to: applicant.phone,
-      from: process.env.TWILIO_PHONE,
-      body: message
-    }).then(function(err, responseData) {
-      console.log(responseData);
-    }).catch(function(err) {
-      console.log('ERROR: ' + err.message);
-    });
-    // Need to add error handler
+    callback(returned);
   }
 
-  return true;
+  function checkApplicant(applicant, callback){
+    var theirReminders = [];
+    for (var j = 0; j < applicant.schools.length; j++) {
+      var school = applicant.schools[j];
+      checkSchool(school, function(returned){
+        theirReminders = theirReminders.concat(returned)
+      })
+    }
+
+    console.log('done checking...')
+    callback(theirReminders, applicant);
+
+  }
+
+  Applicant.findAsync()
+    .then(function(applicants) {
+      console.log('Applicants:')
+      for (var i = 0; i < applicants.length; i++) {
+        checkApplicant(applicants[i], function(theirReminders, applicant){
+          if(theirReminders.length > 0){
+            createMessage(theirReminders, applicant)
+          }
+        });
+      }
+    }).catch(function(e){
+      console.log(e);
+    })
+}
+
+function createMessage(reminders, applicant) {
+  var message = '';
+  message += 'Hello! We wanted to remind you about the following deadlines: \n'
+  for (var j = 0; j < reminders.length; j++) {
+    var reminder = reminders[j];
+    addLine(reminder);
+  }
+
+  function addLine(reminder){
+    message+="\n"
+    message += reminder.schoolName;
+    message += '\'s ';
+    message += reminder.deadlineName;
+    message += ', due ';
+    message += 'today';
+  }
+
+
+  console.log('MESSAGE: ' + message)
+
+  var notify = Promise.promisifyAll(twilio.sendMessage);
+
+  notify({
+    to: applicant.phone,
+    from: process.env.TWILIO_PHONE,
+    body: message
+  }).then(function(responseData) {
+    console.log(responseData);
+  }).catch(function(err) {
+    console.log('ERROR: ' + err.message);
+  });
 }
 
 
@@ -100,9 +144,8 @@ export function registered(req, res) {
 }
 
 export function reminders(req, res) {
-  sendReminders(req);
-}
-
-export function test(req, res) {
-  return false;
+  console.log('Sending reminder alerts...')
+  setTimeout(function(){
+    sendAlerts();
+  }, 5000)
 }
