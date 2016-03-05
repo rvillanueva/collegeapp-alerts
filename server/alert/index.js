@@ -4,6 +4,7 @@ var Applicant = require('../api/applicant/applicant.model');
 var Promise = require('bluebird');
 var twilio = require('twilio')(process.env.TWILIO_ID, process.env.TWILIO_KEY);
 var schools = require('../components/data/reminders.json');
+var moment = require('moment')
 
 function sendAlerts() {
   var today = new Date();
@@ -13,8 +14,16 @@ function sendAlerts() {
     /// Cycle through deadlines of that school to see if any are for today
     for (var j = 0; j < school.deadlines.length; j++) {
       var deadline = school.deadlines[j];
+      var date = new Date(deadline.date);
+      date.setHours(12);
+      console.log(date);
       // Identify what reminders are due today
-      if ((deadline.date >= today && deadline.date < today) || process.env.NODE_ENV == 'development') { // Logic to check if between today and tomorrow or if early reminder
+      if ((
+        moment(date).isAfter(moment().startOf('day')) &&
+        moment(date).isBefore(moment().endOf('day'))
+      )
+        //|| process.env.NODE_ENV == 'development'
+      ) { // Logic to check if between today and tomorrow or if early reminder
         var reminder = {
           satId: school.satId,
           deadlineName: deadline.deadlineName,
