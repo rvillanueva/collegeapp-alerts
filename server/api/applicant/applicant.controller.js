@@ -80,9 +80,9 @@ export function show(req, res) {
 // Creates a new Applicant in the DB
 export function create(req, res) {
   // create applicant with phone number
-  //req.body.created = new Date();
+  req.body.created = new Date();
   Applicant.createAsync(req.body)
-    //.then(Alert.registered(res))
+    .then(Alert.registered(res))
     .then(responseWithResult(res, 201))
     .catch(handleError(res));
 }
