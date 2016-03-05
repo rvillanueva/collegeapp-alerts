@@ -13,14 +13,16 @@ function sendReminders(req) {
   // - Send each user a reminder
   Applicant.findAsync()
     .then(function(res) {
+      console.log('Applicants:')
       console.log(res)
       var applicants = res;
-      for (var i; i < applicants.length; i++) {
+      for (var i = 0; i < applicants.length; i++) {
         var applicant = applicants[i];
+        console.log(applicant);
         var theirReminders = [];
-        for (var j; j < applicants.schools.length; j++) {
+        for (var j = 0; j < applicant.schools.length; j++) {
           var school = applicants.schools[j];
-          for (var k; k < reminders.length; k++) {
+          for (var k = 0; k < reminders.length; k++) {
             var reminder = reminders[k];
             if (reminder.satId == school.satId) {
               theirReminders.push(reminder);
@@ -36,7 +38,7 @@ function sendReminders(req) {
   function createMessage(reminders, applicant) {
     var message;
     message += 'Hello! We wanted to remind you about the following deadlines: \n'
-    for (var j; j < theirReminders.length; j++) {
+    for (var j = 0; j < theirReminders.length; j++) {
       var reminder = theirReminders[j];
       message += reminder.schoolName;
       message += '\'s ';
@@ -45,21 +47,23 @@ function sendReminders(req) {
       message += 'today';
     }
 
+    console.log('MESSAGE: ' + message)
+
     var notify = Promise.promisifyAll(twilio.sendMessage);
 
     notify({
-        to: applicant.phone,
-        from: process.env.TWILIO_PHONE,
-        body: message
-      }).then(function(err, responseData) {
-            console.log(responseData);
-            resolve(entity);
-          }).catch(function(err) {
-            res.status(err.status).send(err.message);
-            resolve(null);
-          });
- // Need to add error handler
+      to: applicant.phone,
+      from: process.env.TWILIO_PHONE,
+      body: message
+    }).then(function(err, responseData) {
+      console.log(responseData);
+    }).catch(function(err) {
+      console.log('ERROR: ' + err.message);
+    });
+    // Need to add error handler
   }
+
+  return true;
 }
 
 
@@ -100,11 +104,5 @@ export function reminders(req, res) {
 }
 
 export function test(req, res) {
-  return function(entity) {
-    return new Promise(function(resolve, reject) {
-      setTimeout(function() {
-        resolve(entity);
-      }, 1000)
-    });
-  }
+  return false;
 }

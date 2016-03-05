@@ -16,7 +16,6 @@ var Alert = require('../../alert')
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  console.log('Error ' + statusCode);
   return function(err) {
     res.status(statusCode).send(err);
   };
@@ -24,10 +23,8 @@ function handleError(res, statusCode) {
 
 function responseWithResult(res, statusCode) {
   statusCode = statusCode || 200;
-  console.log('Response ' + statusCode);
   return function(entity) {
     if (entity) {
-      console.log(statusCode)
       res.status(statusCode).json(entity);
     }
   };
@@ -40,13 +37,6 @@ function handleEntityNotFound(res) {
       return null;
     }
     return entity;
-  };
-}
-
-function testHandler(res) {
-  return function(entity) {
-      res.status(404).end();
-      return null;
   };
 }
 
@@ -88,9 +78,9 @@ export function show(req, res) {
 
 // Creates a new Applicant in the DB
 export function create(req, res) {
-  // create applicant with phone number, verified false
+  // create applicant with phone number
+  req.body.created = new Date();
   Applicant.createAsync(req.body)
-    //.then(Alert.test(res))
     .then(Alert.registered(res))
     .then(responseWithResult(res, 201))
     .catch(handleError(res));

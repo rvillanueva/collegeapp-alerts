@@ -1,3 +1,3 @@
-satId,schoolName,deadlineName,date
-3917,UMass Amherst,Early Admissions Deadline,1/20/16
-3917,UMass Amherst,Regular Admissions Deadline,2/20/16
+satId,schoolName,deadlineName,date,reminderDaysPrior
+3917,UMass Amherst,Early Admissions Deadline,1/20/16,7
+3917,UMass Amherst,Regular Admissions Deadline,2/20/16,7
