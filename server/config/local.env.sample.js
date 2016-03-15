@@ -12,6 +12,15 @@ module.exports = {
   GOOGLE_ID:        'app-id',
   GOOGLE_SECRET:    'secret',
 
+  TWILIO_PHONE: '',
+  TWILIO_ID: '',
+  TWILIO_KEY: '',
+
+  CRON: 'inactive',
+
+  INTERNAL_SECRET: 'secret',
+
+
   // Control debug level for modules using visionmedia/debug
   DEBUG: ''
 };

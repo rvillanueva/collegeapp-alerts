@@ -79,3 +79,17 @@ export function setTokenCookie(req, res) {
   res.cookie('token', token);
   res.redirect('/');
 }
+
+/**
+ * Internal secret validation
+ */
+export function internal() {
+  return compose()
+    .use(function (req, res, next) {
+      if (req.headers && req.headers.internal_secret == process.env.INTERNAL_SECRET){
+        next();
+      } else {
+        res.status(403).end();
+      }
+    });
+}
