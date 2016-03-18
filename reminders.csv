@@ -1,5 +1,21 @@
 satId,schoolName,deadlineName,date,reminderDaysPrior
-3917,UMass Amherst,Early Admissions Deadline,1/20/16,7
-3917,UMass Amherst,Regular Admissions Deadline,2/20/16,7
-3917,UMass Amherst,Fake Admissions Deadline,3/4/16,7
-3917,UMass Amherst,Fake Admissions Deadline,3/15/16,7
+3917,UMass Amherst,Early Admissions Deadline,3/15/16,7
+3917,UMass Amherst,Regular Admissions Deadline,4/15/16,7
+3667,Norteastern university,Early Admissions Deadline,11/1/16,7
+3667,Norteastern university,Fall Admissions Deadline,4/1/16,7
+3667,Norteastern university,Spring Admissions Deadline,10/1/16,7
+3924,Umass Boston,Fall Admissions Deadline,6/15/16,7
+3924,Umass Boston,Spring Admissions Deadline,12/15/16,7
+3087,Boston University,Fall Admissions Deadline,3/1/16,7
+3087,Boston University,Spring Admissions Deadline,11/1/16,7
+3522,Salem State,Fall Admissions Deadline,8/1/16,7
+3522,Salem State,Spring Admissions Deadline,12/1/16,7
+3771,Suffolk University,Fall Admissions Deadline,3/15/16,7
+3367,Emerson College,Fall Admissions Deadline,3/15/16,7
+3367,Emerson College,Spring Admissions Deadline,11/1/16,7
+3761,Simmons College,Fall Application Deadlines,4/1/16,7
+3761,Simmons College,Spring Application Deadlines,11/1/16,7
+3285,Curry College,Fall Admissions Deadline,7/1/16,7
+3285,Curry College,Spring Admissions Deadline,1/1/16,7
+3519,Framingham State University,Fall Admissions Deadline,2/15/16,7
+3519,Framingham State University,Spring Admssions Deadline,12/1/16,7
