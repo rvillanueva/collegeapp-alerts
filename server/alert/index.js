@@ -73,13 +73,23 @@ function sendReminders(reminders) {
 
   Applicant.findAsync()
     .then(function(applicants) {
-      console.log('Applicants:')
-      for (var i = 0; i < applicants.length; i++) {
-        checkApplicant(applicants[i], function(theirReminders, applicant){
-          if(theirReminders.length > 0){
-            createMessage(theirReminders, applicant)
-          }
-        });
+      console.log('Applicants:');
+      console.log(applicants);
+      if(applicants && applicants.length > 0){
+        for (var i = 0; i < applicants.length; i++) {
+          checkApplicant(applicants[i], function(theirReminders, applicant){
+            if(theirReminders.length > 0){
+              createMessage(theirReminders, applicant)
+            }
+            if(i == applicants.length - 1){
+              console.log('Reminders sent!')
+              return true;
+            }
+          });
+        }
+      } else {
+        console.log('No applicants registered.')
+        return false;
       }
     }).catch(function(e){
       console.log(e);

@@ -61,6 +61,7 @@ function removeEntity(res) {
 
 // Creates a new Alert in the DB
 export function send(req, res) {
-  Alert.reminders();
-  res.status(200).end();
+    console.log('Sending alerts now...')
+    Alert.reminders();
+    return res.status(200).end();
 }
