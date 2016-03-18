@@ -28,9 +28,7 @@
     "passport-local": "^1.0.0",
     "request": "^2.69.0",
     "serve-favicon": "^2.3.0",
-    "twilio": "^2.9.0"
-  },
-  "devDependencies": {
+    "twilio": "^2.9.0",
     "autoprefixer": "^6.0.0",
     "babel-core": "^5.6.4",
     "csv-parse": "^1.0.2",
@@ -98,12 +96,15 @@
     "proxyquire": "^1.0.1",
     "supertest": "^1.1.0"
   },
+  "devDependencies": {
+  },
   "engines": {
     "node": "^4.2.3",
     "npm": "^2.14.7"
   },
   "scripts": {
-    "start": "node server",
+    "start": "node dist/server/app.js",
+    "post-install": "grunt build && cd dist && bower install",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
