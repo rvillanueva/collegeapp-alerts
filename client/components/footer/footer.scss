@@ -4,3 +4,11 @@ footer.footer {
   margin-top: 70px;
   border-top: 1px solid #E5E5E5;
 }
+
+.source-icon{
+  font-size: 50px;
+  color: #043867;
+  &:hover {
+    color: #2c6294;
+  }
+}
