@@ -1,9 +1,9 @@
 satId,schoolName,deadlineName,date,reminderDaysPrior
 3917,UMass Amherst,Early Admissions Deadline,3/15/16,7
 3917,UMass Amherst,Regular Admissions Deadline,4/15/16,7
-3667,Norteastern university,Early Admissions Deadline,11/1/16,7
-3667,Norteastern university,Fall Admissions Deadline,4/1/16,7
-3667,Norteastern university,Spring Admissions Deadline,10/1/16,7
+3667,Northeastern university,Early Admissions Deadline,11/1/16,7
+3667,Northeastern university,Fall Admissions Deadline,4/1/16,7
+3667,Northeastern university,Spring Admissions Deadline,10/1/16,7
 3924,Umass Boston,Fall Admissions Deadline,6/15/16,7
 3924,Umass Boston,Spring Admissions Deadline,12/15/16,7
 3087,Boston University,Fall Admissions Deadline,3/1/16,7
@@ -61,4 +61,7 @@ satId,schoolName,deadlineName,date,reminderDaysPrior
 1,Test School,Test Deadline,4/28/16,7
 1,Test School,Test Deadline,4/29/16,7
 1,Test School,Test Deadline,4/30/16,7
-,,,,
+3667,Northeastern university,"On The Spot Admission: 11am - 6pm, Academic Building 220 ",4/13/16,7
+3917,UMass Amherst,"On The Spot Admission: 9:30am - 4:30pm, Academic Building 222",4/11/16,7
+3964,Wheelock College,"On The Spot Admission: 10am - 3:30pm, Academic Building 224",4/12/16,7
+3120,Bay State College,"On The Spot Admission: 10am - 3:00pm, Academic Building 226",4/14/16,7

@@ -18,25 +18,40 @@ function sendAlerts() {
       date.setHours(12);
       console.log(date);
       // Identify what reminders are due today
-      if ((
-        moment(date).isAfter(moment().startOf('day')) &&
-        moment(date).isBefore(moment().endOf('day'))
-      )
-        //|| process.env.NODE_ENV == 'development'
-      ) { // Logic to check if between today and tomorrow or if early reminder
-        var reminder = {
-          satId: school.satId,
-          deadlineName: deadline.deadlineName,
-          date: deadline.date,
-          schoolName: school.schoolName
-        };
+      var reminder = {
+        satId: school.satId,
+        deadlineName: deadline.deadlineName,
+        date: deadline.date,
+        schoolName: school.schoolName
+      };
+      if (
+        moment(date).subtract(1, 'days').isAfter(moment().startOf('day')) &&
+        moment(date).subtract(1, 'days').isBefore(moment().endOf('day'))
+      ){
+        reminder.away = 'tomorrow';
+        reminders.push(reminder);
+        console.log(reminder);
+      } else if (
+        moment(date).subtract(3, 'days').isAfter(moment().startOf('day')) &&
+        moment(date).subtract(3, 'days').isBefore(moment().endOf('day'))
+      ) {
+        reminder.away = 'in three days';
+        reminders.push(reminder);
+        console.log(reminder);
+      } else if (
+        moment(date).subtract(7, 'days').isAfter(moment().startOf('day')) &&
+        moment(date).subtract(7, 'days').isBefore(moment().endOf('day'))
+      ) {
+        reminder.away = 'in a week';
         reminders.push(reminder);
         console.log(reminder);
       }
     }
-    // Push the reminders to another service that finds users tracking those schools
-    sendReminders(reminders);
   }
+  // Push the reminders to another service that finds users tracking those schools
+
+  sendReminders(reminders);
+
 
 }
 
@@ -110,7 +125,7 @@ function createMessage(reminders, applicant) {
     message += '\'s ';
     message += reminder.deadlineName;
     message += ', due ';
-    message += 'today';
+    message += reminder.away;
   }
 
 
