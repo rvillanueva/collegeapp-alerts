@@ -37,7 +37,8 @@ class MainController {
     if(!matched){
       var added = {
         satId: $item.satId,
-        schoolName: $item.schoolName
+        schoolName: $item.schoolName,
+        deadlines: $item.deadlines
       }
       this.applicant.schools.push(added);
     } else {
@@ -51,9 +52,16 @@ class MainController {
       window.alert('Please add a school to your reminders.')
       return null;
     }
-    this.$http.post('/api/applicants/', this.applicant)
+    var posted = this.applicant;
+    angular.forEach(posted.schools, function(school, index){
+      delete school.deadlines;
+    })
+    this.$http.post('/api/applicants/', posted)
       .then(response => {
         this.$location.url('/success');
+      })
+      .catch(err => {
+        window.alert('ERROR: ' + err);
       });
     console.log(this.applicant);
   }

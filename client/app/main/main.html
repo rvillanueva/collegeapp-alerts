@@ -1,19 +1,27 @@
 <navbar></navbar>
 
-<div class="container">
+<div class="container content-area">
   <div class="row">
-    <div class="col-lg-12 centered">
+    <div class="centered" ng-class="{'col-md-8': main.applicant.schools.length > 0, 'col-md-12': main.applicant.schools.length == 0}">
       <br>
-      What school's application deadlines would you like to be reminded of?<br><br>
-      <input type="text" ng-model="main.addedSchool" typeahead="school.schoolName for school in main.schools | filter:{schoolName:$viewValue} | limitTo:8" typeahead-on-select="main.addSchool($item, $model, $label)"></input>
-
-      <br><br>
-      <p ng-repeat="school in main.applicant.schools">{{school.schoolName}}</p>
+      <input type="text" class="styled-input" placeholder="What universities do you want to apply to?"ng-model="main.addedSchool" typeahead="school.schoolName for school in main.schools | filter:{schoolName:$viewValue} | limitTo:8" typeahead-on-select="main.addSchool($item, $model, $label)"></input>
       <br>
-      Your phone number:<br>
-      <input type="tel" ng-model="main.applicant.phone"></input>
+      <br>
+      <input class="styled-input" type="tel" ng-model="main.applicant.phone" placeholder="Mobile phone #"></input>
       <br><br>
-      <button class="btn btn-lg btn-primary" ng-click="main.submit()">Save</button>
+      <button class="submit-button" ng-click="main.submit()">REMIND ME</button>
+      <br><br>
+    </div>
+    <div class="col-md-4" ng-if="main.applicant.schools.length > 0">
+      <div ng-repeat="school in main.applicant.schools">
+      <h4>{{school.schoolName}}</h4>
+          <p ng-repeat="deadline in school.deadlines"> <strong>{{deadline.date}}</strong>: {{deadline.deadlineName}}
+          </p>
+      </div>
+      <br>
+      <div class="footnote">
+        <i>You'll be reminded a week before, three days before, and a day before each deadline. Text STOP to stop alerts at any time.</i>
+      </div>
     </div>
   </div>
 </div>

@@ -3,22 +3,73 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/font
 @import '../bower_components/bootstrap-social/bootstrap-social.scss';
 $fa-font-path: "../bower_components/font-awesome/fonts";
 @import '../bower_components/font-awesome/scss/font-awesome';
-
 /**
  * App-wide Styles
  */
-
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
   color: #000;
   padding: 0.2em 0;
 }
-
 .centered {
   text-align: center;
 }
-
+.navbar {
+  min-height: 68px;
+  color: #FFF;
+  & a {
+    color: FFF;
+  }
+}
+.navbar-default {
+  background-color: #043867;
+  border-color: transparent;
+}
+.navbar-nav li a {
+  color: #FFF !important;
+  padding: 23px;
+}
+.navbar-nav {
+  & .active a {
+    background-color: transparent !important;
+    text-decoration: underline;
+  }
+}
+.navbar-collapse {
+  height: 68px;
+}
+.styled-input {
+  width: 100%;
+  font-size: 1em;
+  height: 100px;
+  text-align: center;
+  @media (min-width:600px) {
+    width: 80%;
+    font-size: 1.6em;
+  }
+}
+.phone-icon {
+  font-size: 50px;
+  color: #043867;
+  padding-right: 20px;
+}
+.submit-button {
+  border-radius: 0;
+  font-size: 1.4em;
+  text-transform: uppercase;
+  color: #FFF;
+  background-color: #043867;
+  padding: 30px;
+  border-color: transparent;
+  border-width: 0;
+  &:hover {
+    background-color: #2c6294;
+  }
+}
+.footnote {
+  font-size: 0.9em;
+}
 // Component styles are injected through grunt
 // injector
 @import 'admin/admin.scss';
