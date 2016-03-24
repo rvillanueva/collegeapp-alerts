@@ -52,7 +52,7 @@ class MainController {
       window.alert('Please add a school to your reminders.')
       return null;
     }
-    var posted = this.applicant;
+    var posted = angular.copy(this.applicant);
     angular.forEach(posted.schools, function(school, index){
       delete school.deadlines;
     })

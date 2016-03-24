@@ -67,6 +67,26 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
     background-color: #4c84b8;
   }
 }
+
+.back-button {
+  border-radius: 0;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #FFF;
+  background-color: #2c6294;
+  padding: 16px;
+  border-color: transparent;
+  border-width: 0;
+  &:hover {
+    background-color: #4c84b8;
+  }
+}
+
+.success-icon {
+  color: #2c9439;
+  font-size: 120px;
+}
+
 .footnote {
   font-size: 0.9em;
 }
